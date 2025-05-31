@@ -9,8 +9,10 @@
             </router-link>
         </div>
 
+        <div class="grid grid-cols-1 gap-6">
+            <ReusableList :items="listItems" :onEdit="handleEdit" :onDelete="handleDelete" />
+        </div>
         <!-- Listagem -->
-        <ReusableList :items="listItems" :onEdit="handleEdit" :onDelete="handleDelete" />
     </div>
 </template>
 
@@ -18,24 +20,33 @@
 import { ref } from 'vue'
 import ReusableList from '@/components/ReusableList.vue'
 
-const listItems = ref([
-    {
-        id: 1,
-        title: 'Startup Alpha',
-        description: 'Solução em IA para negócios locais.',
-    },
-    {
-        id: 2,
-        title: 'Startup Beta',
-        description: 'Gestão para espaços de coworking.',
-    },
-])
+const listItems = [
+  {
+    id: 1,
+    title: 'Startup Alpha',
+    description: 'IA para negócios locais.',
+    stage: 'Pré-incubação',
+  },
+  {
+    id: 2,
+    title: 'Startup Beta',
+    description: 'Coworking management.',
+    stage: 'Crescimento',
+  },
+  {
+    id: 3,
+    title: 'Startup Gamma',
+    description: 'Soluções ambientais.',
+    stage: 'Implantação',
+  },
+]
 
 function handleEdit(item) {
-    console.log('Editar:', item)
+  // todo
 }
 
 function handleDelete(item) {
-    console.log('Excluir:', item)
+  // todo
 }
+
 </script>

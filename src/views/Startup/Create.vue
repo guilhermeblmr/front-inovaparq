@@ -41,7 +41,6 @@ const form = reactive({
 })
 
 function handleSubmit() {
-    console.log('Dados do formulário:', form)
-    // Aqui você pode fazer o POST para a API ou usar Inertia, por exemplo
+    // todo
 }
 </script>
