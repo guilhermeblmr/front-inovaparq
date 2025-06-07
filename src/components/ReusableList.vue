@@ -4,24 +4,24 @@
             class="w-64 shrink-0 bg-gray-100 rounded-xl p-4 border border-gray-200" :data-stage="stage">
             <h2 class="text-md font-bold text-gray-700 mb-3">{{ stage }}</h2>
 
-            <draggable :list="filteredItems(stage)" :group="{ name: 'kanban', pull: true, put: true }" class="space-y-3"
-                item-key="id" @end="onDragEnd">
+            <draggable :list="filteredItems(stage)" :disabled="user.profile !== 'admin'"
+                :group="{ name: 'kanban', pull: true, put: true }" class="space-y-3" item-key="id" @end="onDragEnd">
                 <template #item="{ element: item }">
                     <div class="bg-white p-3 rounded-lg shadow-sm border border-gray-200">
                         <div class="flex justify-between items-center">
                             <div>
                                 <h3 class="font-semibold text-gray-800 text-sm">
-                                    {{ item.title }}
+                                    {{ item.name }}
                                 </h3>
                                 <p class="text-xs text-gray-500 mt-1">
                                     {{ item.description }}
                                 </p>
                             </div>
-                            <div class="flex flex-col gap-1">
-                                <button @click="() => props.onEdit(item)"
+                            <div v-if="user.profile == 'admin'" class="flex flex-col gap-1">
+                                <router-link :to="{ name: 'edit-startup', params: { id: item.id } }"
                                     class="text-xs bg-blue-500 text-white px-2 py-1 rounded hover:bg-blue-600">
                                     Editar
-                                </button>
+                                </router-link>
                                 <button @click="() => props.onDelete(item)"
                                     class="text-xs bg-red-500 text-white px-2 py-1 rounded hover:bg-red-600">
                                     Excluir
@@ -38,10 +38,11 @@
 <script setup>
 import { defineProps } from 'vue';
 import draggable from 'vuedraggable';
+import { computed } from 'vue'
+import { useStore } from 'vuex'
 
 const props = defineProps({
     items: {
-        type: Array,
         required: true,
     },
     onEdit: {
@@ -55,23 +56,45 @@ const props = defineProps({
 });
 
 const stages = [
-    'Pré-incubação',
+    'Pré-Incubação',
     'Implantação',
     'Crescimento',
     'Consolidação',
     'Graduação',
 ];
 
+const store = useStore()
+
+const user = computed(() => store.getters.currentUser)
+
 function filteredItems(stage) {
     return props.items.filter((item) => item.stage === stage);
 }
 
 function onDragEnd(event) {
-    const { item, to } = event;
+    const movedItem = event.item._underlying_vm_;
+    const { to } = event;
     const newStage = to.closest('[data-stage]').getAttribute('data-stage');
-    item.stage = newStage;
-    console.log(`Item moved to stage: ${newStage}`);
+    movedItem.stage = newStage;
 
-    // todo: atualizar o dado no backend e retornar a lista atualizada
+    fetch(`http://127.0.0.1:8000/startups/${movedItem.id}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ ...movedItem, stage: newStage }),
+    })
+        .then(response => response.json())
+        .then(updatedItem => {
+            return fetch('/api/items');
+        })
+        .then(response => response.json())
+        .then(updatedList => {
+            emit('update:items', updatedList);
+        })
+        .catch(error => {
+            console.error('Erro ao atualizar item:', error);
+        });
+
 }
 </script>

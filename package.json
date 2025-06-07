@@ -10,9 +10,13 @@
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.7",
+    "axios": "^1.9.0",
+    "sweetalert2": "^11.22.0",
     "tailwindcss": "^4.1.7",
     "vue": "^3.5.13",
-    "vuedraggable": "^4.1.0"
+    "vue3-toastify": "^0.2.8",
+    "vuedraggable": "^4.1.0",
+    "vuex": "^4.0.2"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",
