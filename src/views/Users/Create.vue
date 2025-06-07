@@ -1,23 +1,28 @@
 <!-- src/views/Startup/Create.vue -->
 <template>
     <div class="p-6 max-w-xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">Nova Startup</h1>
+        <h1 class="text-2xl font-bold mb-6">Novo usuário</h1>
 
         <form @submit.prevent="handleSubmit" class="space-y-4">
             <div>
-                <label for="name" class="block text-sm font-medium text-gray-700">Nome da empresa</label>
+                <label for="name" class="block text-sm font-medium text-gray-700">Nome</label>
                 <input v-model="form.name" type="text" id="name" name="name"
                     class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-700">Descrição</label>
-                <textarea v-model="form.description" id="description" rows="3" name="description"
-                    class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500"></textarea>
+                <label for="email" class="block text-sm font-medium text-gray-700">E-mail</label>
+                <input v-model="form.email" type="email" id="email" name="email"
+                    class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
-            <SelectField label="Incubadora" name="incubator" v-model="form.incubator"
-                :options="['CRIA-TE', 'CAUSE', 'CENTRA']" />
+            <div>
+                <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
+                <input v-model="form.password" type="password" id="password" name="password"
+                    class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <SelectField label="Perfil" name="profile" v-model="form.profile" :options="['admin', 'startup']" />
 
             <div class="pt-4">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
@@ -37,16 +42,17 @@ import 'vue3-toastify/dist/index.css';
 
 const form = reactive({
     name: '',
-    description: '',
-    incubator: '',
+    email: '',
+    password: '',
+    profile: '',
 })
 
 const handleSubmit = () => {
     const payload = {
         name: form.name,
-        description: form.description,
-        incubator: form.incubator,
-        stage: 'Pré-Incubação'
+        email: form.email,
+        password: form.password,
+        profile: form.profile,
     };
 
     if (!validateForm()) {
@@ -60,7 +66,7 @@ const handleSubmit = () => {
         return;
     }
 
-    fetch('http://127.0.0.1:8000/startups/', {
+    fetch('http://127.0.0.1:8000/users/', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -69,12 +75,12 @@ const handleSubmit = () => {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao criar a startup');
+                throw new Error('Erro ao criar o usuário');
             }
             return response.json();
         })
         .then(data => {
-            toast('Startup criada com sucesso!', {
+            toast('Usuário criado com sucesso!', {
                 type: toast.TYPE.SUCCESS,
                 hideProgressBar: false,
                 autoClose: 3000,
@@ -83,12 +89,13 @@ const handleSubmit = () => {
             });
 
             form.name = '';
-            form.description = '';
-            form.incubator = '';
+            form.email = '';
+            form.password = '';
+            form.profile = '';
         })
         .catch(error => {
             console.error('Erro:', error);
-            toast('Erro ao criar a startup: ' + error.message, {
+            toast('Erro ao criar o usuário: ' + error.message, {
                 type: toast.TYPE.ERROR,
                 hideProgressBar: false,
                 autoClose: 3000,
@@ -99,6 +106,6 @@ const handleSubmit = () => {
 }
 
 const validateForm = () => {
-    return form.name && form.description && form.incubator;
+    return form.name && form.email && form.password && form.profile;
 }
 </script>

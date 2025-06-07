@@ -1,7 +1,6 @@
-<!-- src/views/Startup/Create.vue -->
 <template>
     <div class="p-6 max-w-xl mx-auto">
-        <h1 class="text-2xl font-bold mb-6">Nova Startup</h1>
+        <h1 class="text-2xl font-bold mb-6">Editar Startup</h1>
 
         <form @submit.prevent="handleSubmit" class="space-y-4">
             <div>
@@ -21,7 +20,7 @@
 
             <div class="pt-4">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
-                    Salvar
+                    Salvar Alterações
                 </button>
             </div>
         </form>
@@ -29,17 +28,43 @@
 </template>
 
 <script setup>
-import { reactive } from 'vue'
+import { reactive, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import SelectField from '@/components/Forms/SelectField.vue'
 import { toast } from 'vue3-toastify';
 import 'vue3-toastify/dist/index.css';
 
+const route = useRoute();
+const router = useRouter();
+const id = route.params.id;
 
 const form = reactive({
     name: '',
     description: '',
     incubator: '',
 })
+
+const fetchStartup = async () => {
+    try {
+        const res = await fetch(`http://127.0.0.1:8000/startups/${id}/`);
+        if (!res.ok) throw new Error('Erro ao buscar a startup');
+        const data = await res.json();
+        form.name = data.name;
+        form.description = data.description;
+        form.incubator = data.incubator;
+    } catch (error) {
+        toast('Erro ao carregar a startup: ' + error.message, {
+            type: toast.TYPE.ERROR,
+            hideProgressBar: false,
+            autoClose: 3000,
+            position: toast.POSITION.BOTTOM_RIGHT,
+            pauseOnHover: true,
+        });
+        router.push('/startups');
+    }
+}
+
+onMounted(fetchStartup);
 
 const handleSubmit = () => {
     const payload = {
@@ -60,8 +85,8 @@ const handleSubmit = () => {
         return;
     }
 
-    fetch('http://127.0.0.1:8000/startups/', {
-        method: 'POST',
+    fetch(`http://127.0.0.1:8000/startups/${id}/`, {
+        method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -69,26 +94,22 @@ const handleSubmit = () => {
     })
         .then(response => {
             if (!response.ok) {
-                throw new Error('Erro ao criar a startup');
+                throw new Error('Erro ao atualizar a startup');
             }
             return response.json();
         })
         .then(data => {
-            toast('Startup criada com sucesso!', {
+            toast('Startup atualizada com sucesso!', {
                 type: toast.TYPE.SUCCESS,
                 hideProgressBar: false,
                 autoClose: 3000,
                 position: toast.POSITION.BOTTOM_RIGHT,
                 pauseOnHover: true,
             });
-
-            form.name = '';
-            form.description = '';
-            form.incubator = '';
         })
         .catch(error => {
             console.error('Erro:', error);
-            toast('Erro ao criar a startup: ' + error.message, {
+            toast('Erro ao atualizar a startup: ' + error.message, {
                 type: toast.TYPE.ERROR,
                 hideProgressBar: false,
                 autoClose: 3000,
