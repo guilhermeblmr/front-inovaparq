@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="grid grid-cols-1 gap-6">
-			<List :items="listItems" :onEdit="handleEdit" :onDelete="handleDelete" />
+			<List :items="listItems" />
 		</div>
 	</div>
 </template>
