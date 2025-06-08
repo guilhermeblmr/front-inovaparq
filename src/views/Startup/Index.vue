@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="grid grid-cols-1 gap-6">
-			<ReusableList :items="listItems" :onEdit="handleEdit" :onDelete="handleDelete" />
+			<ReusableList :items="listItems" />
 		</div>
 		<!-- Listagem -->
 	</div>

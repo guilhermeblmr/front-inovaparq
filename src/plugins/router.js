@@ -6,7 +6,6 @@ const routes = [
         path: '/',
         component: () => import('@/layouts/Main.vue'),
         children: [
-            { path: '/about', component: () => import('@/views/About.vue'), name: 'about', meta: { requiresAuth: true } },
             { path: '/empresas', component: () => import('@/views/Startup/Index.vue'), name: 'startup-list', meta: { requiresAuth: true } },
             { path: '/empresa/criar', component: () => import('@/views/Startup/Create.vue'), name: 'create-startup', meta: { requiresAuth: true } },
             { path: '/empresa/editar/:id', component: () => import('@/views/Startup/Edit.vue'), name: 'edit-startup', meta: { requiresAuth: true } },

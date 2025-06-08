@@ -33,15 +33,13 @@
 
 <script setup>
 import { useStore } from 'vuex'
-const store = useStore()
 import { computed } from 'vue'
 import { ref, onMounted } from 'vue'
-import axios from 'axios'
+
+const store = useStore()
 
 const user = computed(() => store.getters.currentUser)
 const startup = ref(null)
-
-console.log("user", user.value)
 
 onMounted(async () => {
     if (user.value && user.value.startup_id) {
@@ -55,8 +53,6 @@ onMounted(async () => {
         }
     }
 })
-
-
 
 const logout = () => {
     store.dispatch('logout')
