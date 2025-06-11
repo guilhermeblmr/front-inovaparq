@@ -17,7 +17,7 @@
             </div>
 
             <SelectField label="Incubadora" name="incubator" v-model="form.incubator"
-                :options="['CRIA-TE', 'CAUSE', 'CENTRA']" />
+                :options="['CRIA-TE', 'CAUSE', 'CENTRA', 'NANOTECH']" />
 
             <div class="pt-4">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
@@ -32,7 +32,6 @@
 import { reactive } from 'vue'
 import SelectField from '@/components/Forms/SelectField.vue'
 import { toast } from 'vue3-toastify';
-import 'vue3-toastify/dist/index.css';
 
 
 const form = reactive({
