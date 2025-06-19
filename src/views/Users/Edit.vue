@@ -15,13 +15,13 @@
                     class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500" />
             </div>
 
-            <div>
+            <!-- <div>
                 <label for="password" class="block text-sm font-medium text-gray-700">Senha</label>
                 <input v-model="form.password" type="password" id="password" name="password"
                     class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500" />
-            </div>
+            </div> -->
 
-            <div>
+            <div v-if="form.profile != 'admin'">
                 <label for="startup" class="block text-sm font-medium text-gray-700">Startup</label>
                 <select v-model="form.startup_id" id="startup" name="startup"
                     class="w-full border border-gray-300 rounded-md p-2 text-sm focus:ring-blue-500 focus:border-blue-500">
@@ -58,6 +58,7 @@ const form = reactive({
     email: '',
     password: '',
     startup_id: '',
+    profile: '',
 })
 
 const fetchUser = async () => {
@@ -65,10 +66,12 @@ const fetchUser = async () => {
         const res = await fetch(`http://127.0.0.1:8000/users/${id}/`);
         if (!res.ok) throw new Error('Erro ao buscar o usuário');
         const data = await res.json();
+        console.log(data)
         form.name = data.name;
         form.email = data.email;
         form.password = data.password;
         form.startup_id = data.startup_id;
+        form.profile = data.profile;
     } catch (error) {
         toast('Erro ao carregar o usuário: ' + error.message, {
             type: toast.TYPE.ERROR,
@@ -143,7 +146,6 @@ const handleSubmit = () => {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 pauseOnHover: true,
             });
-            // Optionally redirect or update UI
         })
         .catch(error => {
             console.error('Erro:', error);
@@ -158,6 +160,6 @@ const handleSubmit = () => {
 }
 
 const validateForm = () => {
-    return form.name && form.email && form.password && form.startup_id;
+    return form.name && form.email;
 }
 </script>

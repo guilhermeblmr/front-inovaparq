@@ -4,6 +4,10 @@ import store from '@/store';
 const routes = [
     {
         path: '/',
+        redirect: '/login'
+    },
+    {
+        path: '/',
         component: () => import('@/layouts/Main.vue'),
         children: [
             { path: '/empresas', component: () => import('@/views/Startup/Index.vue'), name: 'startup-list', meta: { requiresAuth: true } },
@@ -12,6 +16,7 @@ const routes = [
             { path: '/usuarios', component: () => import('@/views/Users/Index.vue'), name: 'user-list', meta: { requiresAuth: true } },
             { path: '/usuario/criar', component: () => import('@/views/Users/Create.vue'), name: 'create-user', meta: { requiresAuth: true } },
             { path: '/usuario/editar/:id', component: () => import('@/views/Users/Edit.vue'), name: 'edit-user', meta: { requiresAuth: true } },
+            { path: '/startup/:id', component: () => import('@/views/Startup/Detail.vue'), name: 'startup-detail', meta: { requiresAuth: true } },
         ]
     },
     { path: '/login', component: () => import('@/views/Login.vue') },

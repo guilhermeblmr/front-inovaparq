@@ -6,9 +6,11 @@
         <img src="@/assets/logo.webp" alt="Logo Inovaparq" class="w-24 mb-6" />
 
         <!-- Nome da startup -->
-        <div v-if="startup" class="bg-blue-300 text-black w-40 text-center py-1 mb-2 rounded shadow">
-            {{ startup.name }}
-        </div>
+         <router-link v-if="startup" :to="{ name: 'startup-detail', params: { id: startup.id } }">
+             <div class="bg-blue-300 text-black w-40 text-center py-1 mb-2 rounded shadow">
+                 {{ startup.name }}
+             </div>
+         </router-link>
 
         <!-- Menu -->
         <router-link :to="{ name: 'startup-list' }">

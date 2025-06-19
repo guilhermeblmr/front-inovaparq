@@ -19,6 +19,9 @@
             <SelectField label="Incubadora" name="incubator" v-model="form.incubator"
                 :options="['CRIA-TE', 'CAUSE', 'CENTRA', 'NANOTECH']" />
 
+            <SelectField label="Plano" name="plan" v-model="form.plan"
+                :options="['Start', 'Grow']" />
+
             <div class="pt-4">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
                     Salvar
@@ -38,6 +41,7 @@ const form = reactive({
     name: '',
     description: '',
     incubator: '',
+    plan: '',
 })
 
 const handleSubmit = () => {
@@ -45,6 +49,7 @@ const handleSubmit = () => {
         name: form.name,
         description: form.description,
         incubator: form.incubator,
+        plan: form.plan,
         stage: 'Pré-Incubação'
     };
 
@@ -82,6 +87,7 @@ const handleSubmit = () => {
             });
 
             form.name = '';
+            form.plan = '';
             form.description = '';
             form.incubator = '';
         })

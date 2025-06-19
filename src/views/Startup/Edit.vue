@@ -18,6 +18,9 @@
             <SelectField label="Incubadora" name="incubator" v-model="form.incubator"
                 :options="['CRIA-TE', 'CAUSE', 'CENTRA']" />
 
+            <SelectField label="Plano" name="plan" v-model="form.plan"
+                :options="['Start', 'Grow']" />
+
             <div class="pt-4">
                 <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition">
                     Salvar Alterações
@@ -42,6 +45,7 @@ const form = reactive({
     name: '',
     description: '',
     incubator: '',
+    plan: '',
 })
 
 const fetchStartup = async () => {
@@ -52,6 +56,7 @@ const fetchStartup = async () => {
         form.name = data.name;
         form.description = data.description;
         form.incubator = data.incubator;
+        form.plan = data.plan;
     } catch (error) {
         toast('Erro ao carregar a startup: ' + error.message, {
             type: toast.TYPE.ERROR,
@@ -71,7 +76,8 @@ const handleSubmit = () => {
         name: form.name,
         description: form.description,
         incubator: form.incubator,
-        stage: 'Pré-Incubação'
+        stage: 'Pré-Incubação',
+        plan: form.plan,
     };
 
     if (!validateForm()) {
