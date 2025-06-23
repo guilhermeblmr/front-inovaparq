@@ -44,14 +44,14 @@
                 <p class="mt-1 text-sm">Eventos</p>
             </div>
         </div>
-        <div class="bg-gray-200 p-6 rounded shadow mt-6">
-            <div class="text-center">
+        <div class="bg-gray-200 p-6 rounded shadow mt-6 overflow-y-auto h-[336px]">
+            <div class="">
                 <h2 class="text-xl font-bold">Usuários da startup:</h2>
                 <ul class="mt-4 space-y-2">
                     
                     <li v-for="user in users.users" :key="user.id" class="bg-white p-3 rounded shadow">
-                        <div class="flex justify-between items-center">
-                            <span>{{ user }}</span>
+                        <div class="flex flex-col">
+                            <span>{{ user.name }}</span>
                             <span class="text-sm text-gray-500">{{ user.email }}</span>
                         </div>
                     </li>
@@ -108,6 +108,8 @@ const fetchUsers = async () => {
         if (!res.ok) throw new Error('Erro ao buscar usuários');
         const data = await res.json();
         users.value = data;
+
+        console.log(users.value);
 
         console.log(users);
     } catch (error) {
