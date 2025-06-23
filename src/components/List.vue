@@ -10,7 +10,7 @@
                     {{ item.email }}
                 </p>
                 <span class="text-xs text-gray-400 italic">
-                    {{ item.startup }}
+                    {{ item.profile.charAt(0).toUpperCase() + item.profile.slice(1) }}
                 </span>
             </div>
             <div class="flex flex-col gap-1 text-right">
